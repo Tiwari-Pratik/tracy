@@ -1,0 +1,1 @@
+{"version":3,"file":"contentScript.js","mappings":";;;;;AAAA;AACA;AACA","sources":["webpack://tracy/./src/content/contentScript.ts"],"sourcesContent":["chrome.runtime.sendMessage(\"message from the content script\", (response) => {\n    console.log(response);\n});\n"],"names":[],"sourceRoot":""}
