@@ -7,21 +7,22 @@ interface PopupAppState {
   tabHistory: TabHistoryItem[];
 }
 const App = () => {
-  const [popupState, setPopupState] = useState<PopupAppState>({
-    tabHistory: [],
-  });
+  // const [popupState, setPopupState] = useState<PopupAppState>({
+  //   tabHistory: [],
+  // });
 
-  useEffect(() => {
-    chrome.runtime.onMessage.addListener(
-      (request: { action: string; tabHistory: TabHistoryItem[] }) => {
-        if (request.action === "update") {
-          setPopupState({ tabHistory: request.tabHistory });
-        }
-      },
-    );
-  }, []);
+  // useEffect(() => {
+  //   chrome.runtime.onMessage.addListener(
+  //     (request: { action: string; tabHistory: TabHistoryItem[] }) => {
+  //       if (request.action === "update") {
+  //         setPopupState({ tabHistory: request.tabHistory });
+  //       }
+  //     },
+  //   );
+  // }, []);
 
-  return <UpdatedTabs tabHistory={popupState.tabHistory} />;
+  // return <UpdatedTabs tabHistory={popupState.tabHistory} />;
+  return <div>popup</div>;
 };
 
 export default App;
