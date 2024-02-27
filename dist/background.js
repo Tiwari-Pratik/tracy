@@ -1,26 +1,8 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
 var __webpack_exports__ = {};
 /*!**************************************!*\
   !*** ./src/background/background.ts ***!
   \**************************************/
-__webpack_require__.r(__webpack_exports__);
 let existingTabId = null;
 chrome.action.onClicked.addListener(function (tab) {
     if (existingTabId) {
@@ -34,95 +16,101 @@ chrome.action.onClicked.addListener(function (tab) {
         });
     }
 });
-let tabHistory = [];
+let tabInfo = [];
+let tabIdList = [];
+let childTabIdList = [];
+let updatedTabIdList = [];
+let removedTabIdList = [];
+let replacedTabIdList = [];
 // adding all the opened tabs for the first time
 chrome.tabs.query({}, function (tabs) {
     tabs.forEach((tab) => {
-        tabHistory.push({
+        tabIdList.push(tab.id);
+        tabInfo.push({
             type: "existing",
             id: tab.id,
-            index: tab.index,
             url: tab.url,
             title: tab.title,
+            childId: [],
+            changeLog: { url: [], title: [], id: [] },
         });
     });
+    console.log({ tabInfo });
+    // console.log({ tabIdList });
+    // console.log({ updatedTabIdList });
+    // console.log({ childTabIdList });
+    // console.log({ removedTabIdList });
+    // console.log({ replacedTabIdList });
 });
 // tracking when a new tab is created
-chrome.tabs.onCreated.addListener((tab) => {
-    let parentUrl = "";
-    let parentTitle = "";
-    let parentIndex = null;
-    if (tab.openerTabId) {
-        chrome.tabs.get(tab.openerTabId, function (oldTab) {
-            const ind = tabHistory.findIndex((tab) => tab.id === oldTab.id);
-            if (ind !== -1) {
-                parentIndex = ind;
-            }
-            parentUrl = oldTab.url;
-            parentTitle = oldTab.title;
-        });
-    }
-    tabHistory.push({
+chrome.tabs.onCreated.addListener((newTab) => {
+    tabIdList.push(newTab.id);
+    tabInfo.push({
         type: "created",
-        id: tab.id,
-        index: tab.index,
-        url: tab.url,
-        title: tab.title,
-        parentId: tab.openerTabId,
-        parent: {
-            url: parentUrl,
-            title: parentTitle,
-            index: parentIndex,
-        },
+        id: newTab.id,
+        childId: [],
+        changeLog: { url: [], title: [], id: [] },
     });
-    console.log(tabHistory);
+    if (newTab.openerTabId) {
+        childTabIdList.push(newTab.id);
+        const ind = tabInfo.findIndex((tab) => tab.id === newTab.openerTabId);
+        tabInfo[ind].childId.push(newTab.id);
+        tabInfo[ind].type = "child added";
+    }
+    console.log({ tabInfo });
+    // console.log({ tabIdList });
+    // console.log({ updatedTabIdList });
+    // console.log({ childTabIdList });
+    // console.log({ removedTabIdList });
+    // console.log({ replacedTabIdList });
 });
 //tracking when a tab is deleted
 chrome.tabs.onRemoved.addListener((tabId) => {
-    const removedIndex = tabHistory.findIndex((tab) => tab.id === tabId);
-    tabHistory[removedIndex].type = "removed";
-    console.log(tabHistory);
+    removedTabIdList.push(tabId);
+    const ind = tabInfo.findIndex((tab) => tab.id === tabId);
+    tabInfo[ind].type = "removed";
+    console.log({ tabInfo });
+    // console.log({ tabIdList });
+    // console.log({ updatedTabIdList });
+    // console.log({ childTabIdList });
+    // console.log({ removedTabIdList });
+    // console.log({ replacedTabIdList });
 });
-//tracking when a tab is replaced
-chrome.tabs.onReplaced.addListener((addedTabId, removedTabId) => {
-    let previousTabUrl = "";
-    let previousTabTitle = "";
-    let previousTabindex = null;
-    chrome.tabs.get(removedTabId, (oldTab) => {
-        previousTabTitle = oldTab.title;
-        previousTabUrl = oldTab.url;
-        const ind = tabHistory.findIndex((tab) => tab.id === oldTab.id);
-        if (ind !== -1) {
-            previousTabindex = ind;
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    // console.log({ changeInfo });
+    var _a, _b, _c;
+    const ind = tabInfo.findIndex((tab) => tab.id === tabId);
+    if (ind !== -1) {
+        if (tabInfo[ind].changeLog) {
+            tabInfo[ind].type = "updated";
         }
-    });
-    let newTabUrl = "";
-    let newTabTitle = "";
-    let newTabindex = null;
-    chrome.tabs.get(addedTabId, (newTab) => {
-        newTabTitle = newTab.title;
-        newTabUrl = newTab.url;
-        const ind = tabHistory.findIndex((tab) => tab.id === newTab.id);
-        if (ind !== -1) {
-            newTabindex = ind;
+        (_a = tabInfo[ind].changeLog.id) === null || _a === void 0 ? void 0 : _a.push(tabId);
+        if (changeInfo.url) {
+            (_b = tabInfo[ind].changeLog.url) === null || _b === void 0 ? void 0 : _b.push(changeInfo.url);
         }
-    });
-    tabHistory.push({
-        type: "replaced",
-        id: addedTabId,
-        index: newTabindex,
-        url: newTabUrl,
-        title: newTabTitle,
-        previousId: removedTabId,
-        previous: {
-            url: previousTabUrl,
-            title: previousTabTitle,
-            index: previousTabindex,
-        },
-    });
-    console.log(tabHistory);
+        if (changeInfo.title) {
+            (_c = tabInfo[ind].changeLog.title) === null || _c === void 0 ? void 0 : _c.push(changeInfo.title);
+        }
+    }
+    syncTabInfo(tabId);
+    console.log({ tabInfo });
+    // console.log({ tabIdList });
+    // console.log({ updatedTabIdList });
+    // console.log({ childTabIdList });
+    // console.log({ removedTabIdList });
+    // console.log({ replacedTabIdList });
 });
-
+const syncTabInfo = (id) => {
+    const ind = tabInfo.findIndex((tab) => tab.id === id);
+    if (ind !== -1) {
+        if (tabInfo[ind].changeLog.url.length !== 0) {
+            tabInfo[ind].url = tabInfo[ind].changeLog.url.at(-1);
+        }
+        if (tabInfo[ind].changeLog.title.length !== 0) {
+            tabInfo[ind].title = tabInfo[ind].changeLog.title.at(-1);
+        }
+    }
+};
 
 /******/ })()
 ;

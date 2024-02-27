@@ -572,19 +572,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const App = () => {
-    // const [popupState, setPopupState] = useState<PopupAppState>({
-    //   tabHistory: [],
-    // });
-    // useEffect(() => {
-    //   chrome.runtime.onMessage.addListener(
-    //     (request: { action: string; tabHistory: TabHistoryItem[] }) => {
-    //       if (request.action === "update") {
-    //         setPopupState({ tabHistory: request.tabHistory });
-    //       }
-    //     },
-    //   );
-    // }, []);
-    // return <UpdatedTabs tabHistory={popupState.tabHistory} />;
     return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "popup");
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);

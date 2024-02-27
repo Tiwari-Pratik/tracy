@@ -19,15 +19,15 @@ type RemovedTabIdList = number[];
 type ReplacedTabIdList = number[];
 
 interface ChangeInfo {
-  url: string[];
-  title: string[];
-  id: number[];
+  url?: string[];
+  title?: string[];
+  id?: number[];
 }
 interface TabInfo {
   type: string;
   id: number;
   childId: number[];
-  changeLog?: ChangeInfo;
+  changeLog: ChangeInfo;
   url?: string;
   title?: string;
 }
@@ -49,7 +49,7 @@ chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
       url: tab.url,
       title: tab.title,
       childId: [],
-      changeLog: { url: [], title: [], id: [] },
+      changeLog: {},
     });
   });
   console.log({ tabInfo });
@@ -67,13 +67,12 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
     type: "created",
     id: newTab.id,
     childId: [],
-    changeLog: { url: [], title: [], id: [] },
+    changeLog: {},
   });
   if (newTab.openerTabId) {
     childTabIdList.push(newTab.id);
     const ind = tabInfo.findIndex((tab) => tab.id === newTab.openerTabId);
     tabInfo[ind].childId.push(newTab.id);
-    tabInfo[ind].type = "child added";
   }
   console.log({ tabInfo });
   // console.log({ tabIdList });
@@ -101,18 +100,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
   const ind = tabInfo.findIndex((tab) => tab.id === tabId);
   if (ind !== -1) {
-    if (tabInfo[ind].changeLog) {
-      tabInfo[ind].type = "updated";
-    }
-    tabInfo[ind].changeLog.id?.push(tabId);
+    tabInfo[ind].changeLog.id.push(tabId);
     if (changeInfo.url) {
-      tabInfo[ind].changeLog.url?.push(changeInfo.url);
+      tabInfo[ind].changeLog.url.push(changeInfo.url);
     }
     if (changeInfo.title) {
-      tabInfo[ind].changeLog.title?.push(changeInfo.title);
+      tabInfo[ind].changeLog.title.push(changeInfo.title);
     }
   }
-  syncTabInfo(tabId);
   console.log({ tabInfo });
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
@@ -120,15 +115,3 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   // console.log({ removedTabIdList });
   // console.log({ replacedTabIdList });
 });
-
-const syncTabInfo = (id: number) => {
-  const ind = tabInfo.findIndex((tab) => tab.id === id);
-  if (ind !== -1) {
-    if (tabInfo[ind].changeLog.url.length !== 0) {
-      tabInfo[ind].url = tabInfo[ind].changeLog.url.at(-1);
-    }
-    if (tabInfo[ind].changeLog.title.length !== 0) {
-      tabInfo[ind].title = tabInfo[ind].changeLog.title.at(-1);
-    }
-  }
-};

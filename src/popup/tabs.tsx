@@ -1,10 +1,6 @@
 import React from "react";
-import { TabHistoryItem } from "../background/background";
-interface PopupProps {
-  tabHistory: TabHistoryItem[];
-}
 
-const UpdatedTabs: React.FC<PopupProps> = ({ tabHistory }) => {
+const UpdatedTabs: React.FC = () => {
   return <div>Tabs</div>;
 };
 
