@@ -1,0 +1,16 @@
+
+.container-list {
+  display:flex
+}
+
+.ul{
+  display:flex;
+  padding: .5em 1em;
+  justify-content: space-between;
+}
+
+.li{
+  margin: 0 1em;
+  list-style: none;
+}
+

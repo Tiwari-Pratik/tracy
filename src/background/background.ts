@@ -1,9 +1,29 @@
+import {
+  ChildTabIdList,
+  RemovedTabIdList,
+  TabIdList,
+  TabInfo,
+} from "../utils/schema";
+import { setTabStates } from "../utils/storage";
+
 let existingTabId = null;
+
+chrome.runtime.onInstalled.addListener((event) => {
+  setTabStates([]);
+});
 
 chrome.action.onClicked.addListener(function (tab) {
   if (existingTabId) {
-    // If the tab is already open, switch to it
-    chrome.tabs.update(existingTabId, { active: true });
+    chrome.tabs.get(existingTabId, function (tab) {
+      if (chrome.runtime.lastError) {
+        chrome.tabs.create({ url: "popup.html" }, function (newTab) {
+          existingTabId = newTab.id;
+        });
+      } else {
+        // If the tab is already open, switch to it
+        chrome.tabs.update(existingTabId, { active: true });
+      }
+    });
   } else {
     // If the tab is not open, create a new one
     chrome.tabs.create({ url: "popup.html" }, function (newTab) {
@@ -12,32 +32,26 @@ chrome.action.onClicked.addListener(function (tab) {
   }
 });
 
-type TabIdList = number[];
-type ChildTabIdList = number[];
-type UpdatedTabIdList = number[];
-type RemovedTabIdList = number[];
-type ReplacedTabIdList = number[];
-
-interface ChangeInfo {
-  url: string[];
-  title: string[];
-  id: number[];
-}
-interface TabInfo {
-  type: string;
-  id: number;
-  childId: number[];
-  changeLog?: ChangeInfo;
-  url?: string;
-  title?: string;
-}
-
 let tabInfo: TabInfo[] = [];
+let globalTabState: TabInfo[] = [];
 let tabIdList: TabIdList = [];
 let childTabIdList: ChildTabIdList = [];
-let updatedTabIdList: UpdatedTabIdList = [];
 let removedTabIdList: RemovedTabIdList = [];
-let replacedTabIdList: ReplacedTabIdList = [];
+
+// const getAllTabsInfo = () => {
+//   chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
+//     const tabsArr: OriginalTabInfo[] = [];
+//     tabs.forEach((tab) => {
+//       tabsArr.push({
+//         id: tab.id,
+//         index: tab.index,
+//         url: tab.url,
+//         title: tab.title,
+//       });
+//     });
+//     originalTabsInfo.tabsData = tabsArr;
+//   });
+// };
 
 // adding all the opened tabs for the first time
 chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
@@ -46,13 +60,15 @@ chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
     tabInfo.push({
       type: "existing",
       id: tab.id,
+      index: tab.index,
       url: tab.url,
       title: tab.title,
       childId: [],
       changeLog: { url: [], title: [], id: [] },
     });
   });
-  console.log({ tabInfo });
+  globalTabState = tabInfo;
+  setTabStates(globalTabState);
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
   // console.log({ childTabIdList });
@@ -66,6 +82,7 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
   tabInfo.push({
     type: "created",
     id: newTab.id,
+    index: newTab.index,
     childId: [],
     changeLog: { url: [], title: [], id: [] },
   });
@@ -75,6 +92,8 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
     tabInfo[ind].childId.push(newTab.id);
     tabInfo[ind].type = "child added";
   }
+  globalTabState = tabInfo;
+  setTabStates(globalTabState);
   console.log({ tabInfo });
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
@@ -88,6 +107,9 @@ chrome.tabs.onRemoved.addListener((tabId: number) => {
   removedTabIdList.push(tabId);
   const ind = tabInfo.findIndex((tab) => tab.id === tabId);
   tabInfo[ind].type = "removed";
+
+  globalTabState = tabInfo;
+  setTabStates(globalTabState);
   console.log({ tabInfo });
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
@@ -96,6 +118,7 @@ chrome.tabs.onRemoved.addListener((tabId: number) => {
   // console.log({ replacedTabIdList });
 });
 
+// tracking all the tab updates
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   // console.log({ changeInfo });
 
@@ -131,4 +154,7 @@ const syncTabInfo = (id: number) => {
       tabInfo[ind].title = tabInfo[ind].changeLog.title.at(-1);
     }
   }
+
+  globalTabState = tabInfo;
+  setTabStates(globalTabState);
 };

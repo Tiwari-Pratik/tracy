@@ -1,7 +1,48 @@
 import React from "react";
+import TabNode from "../components/tabnode";
+import "./tabs.css";
+import Connector from "../components/connector";
+import TestList from "../components/text";
 
 const UpdatedTabs: React.FC = () => {
-  return <div>Tabs</div>;
+  const data = [
+    {
+      urls: ["url1", "url2"],
+      titles: ["title1", "title2"],
+      children: [
+        {
+          urls: ["url3", "url4"],
+          titles: ["title3", "title4"],
+        },
+        {
+          urls: ["url5", "url6"],
+          titles: ["title5", "title6"],
+        },
+      ],
+    },
+    {
+      urls: ["url1"],
+      titles: ["title1"],
+      children: [
+        {
+          urls: ["url3", "url4"],
+          titles: ["title3", "title4"],
+        },
+        {
+          urls: ["url5"],
+          titles: ["title5"],
+        },
+      ],
+    },
+  ];
+  return (
+    <div className="tabList">
+      <TabNode url="url1" title="title1" />
+      <Connector />
+      <TabNode url="url2" title="title2" />
+      <TestList />
+    </div>
+  );
 };
 
 export default UpdatedTabs;
