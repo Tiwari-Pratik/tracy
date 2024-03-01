@@ -22,3 +22,11 @@ export interface TabInfo {
   title?: string;
   index: number;
 }
+
+export interface TabNodes {
+  urls: string[];
+  type: string;
+  titles: string[];
+  childNodes: TabNodes[];
+  tabId: number;
+}

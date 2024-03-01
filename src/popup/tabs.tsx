@@ -37,9 +37,6 @@ const UpdatedTabs: React.FC = () => {
   ];
   return (
     <div className="tabList">
-      <TabNode url="url1" title="title1" />
-      <Connector />
-      <TabNode url="url2" title="title2" />
       <TestList />
     </div>
   );

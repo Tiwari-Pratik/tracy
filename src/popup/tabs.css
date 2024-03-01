@@ -1,8 +1,9 @@
 .tabList {
-  margin: 1em 0;
-  padding: 0.5em 1em;
-  background: red;
-  display: flex;
-  justify-content: start;
-  align-items: center;
+  margin: 5em 0;
+  /* padding: 0.5em 1em; */
+  /* background: red; */
+  /* width: 100vw; */
+  /* display: flex; */
+  /* justify-content: start; */
+  /* align-items: center; */
 }
