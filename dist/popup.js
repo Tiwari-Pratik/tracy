@@ -23,25 +23,26 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   display: flex;
+  flex-direction: column;
 }
 
 .ul {
   display: grid;
   /* background: red; */
-  padding: 0.1em 0.5em;
-  margin: 0.1em;
+  padding: 0.1em 0.2em;
+  margin: 0.1em 1em;
   /* grid-template-columns: repeat(5, 1fr); */
-  gap: 0.2em;
+  gap: 0.1em;
   grid-template-rows: 1fr;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
+  grid-auto-columns: min-content;
 }
 
 .li {
-  margin: 0 0.1em;
+  /* margin: 0 0.1em; */
   list-style: none;
   /* background: blue; */
-  padding: 0.1em 0.1em;
+  /* padding: 0.1em 0.1em; */
   /* vertical-align: center; */
 }
 
@@ -60,7 +61,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   width: 50px;
   /* height: 10px; */
   /* background: yellow; */
-  height: 3px;
+  height: 2px;
   background: gray;
   align-self: center;
 }
@@ -75,7 +76,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   border-left: 2px solid gray;
   border-bottom: 2px solid gray;
 }
-`, "",{"version":3,"sources":["webpack://./src/components/test.css"],"names":[],"mappings":"AAAA;EACE,aAAa;AACf;;AAEA;EACE,aAAa;EACb,qBAAqB;EACrB,oBAAoB;EACpB,aAAa;EACb,2CAA2C;EAC3C,UAAU;EACV,uBAAuB;EACvB,sBAAsB;EACtB,sBAAsB;AACxB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,sBAAsB;EACtB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,8BAA8B;EAC9B,oBAAoB;EACpB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,wBAAwB;EACxB,WAAW;EACX,gBAAgB;EAChB,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,sBAAsB;EACtB,iBAAiB;EACjB,sBAAsB;EACtB,iBAAiB;EACjB,2BAA2B;EAC3B,6BAA6B;AAC/B","sourcesContent":[".container-list {\n  display: flex;\n}\n\n.ul {\n  display: grid;\n  /* background: red; */\n  padding: 0.1em 0.5em;\n  margin: 0.1em;\n  /* grid-template-columns: repeat(5, 1fr); */\n  gap: 0.2em;\n  grid-template-rows: 1fr;\n  grid-auto-flow: column;\n  grid-auto-columns: 1fr;\n}\n\n.li {\n  margin: 0 0.1em;\n  list-style: none;\n  /* background: blue; */\n  padding: 0.1em 0.1em;\n  /* vertical-align: center; */\n}\n\n.li>div {\n  width: min-content;\n  height: 3em;\n  padding: 0 0.1em;\n  /* background: green; */\n  display: grid;\n  grid-template-columns: subgrid;\n  justify-items: start;\n  align-items: center;\n}\n\n.seperator {\n  width: 50px;\n  /* height: 10px; */\n  /* background: yellow; */\n  height: 3px;\n  background: gray;\n  align-self: center;\n}\n\n.childConnector {\n  width: 20px;\n  height: 50%;\n  /* background: pink; */\n  /* height: 3px; */\n  /* background: gray; */\n  align-self: start;\n  border-left: 2px solid gray;\n  border-bottom: 2px solid gray;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/components/test.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,qBAAqB;EACrB,oBAAoB;EACpB,iBAAiB;EACjB,2CAA2C;EAC3C,UAAU;EACV,uBAAuB;EACvB,sBAAsB;EACtB,8BAA8B;AAChC;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,sBAAsB;EACtB,0BAA0B;EAC1B,4BAA4B;AAC9B;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,8BAA8B;EAC9B,oBAAoB;EACpB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,wBAAwB;EACxB,WAAW;EACX,gBAAgB;EAChB,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,sBAAsB;EACtB,iBAAiB;EACjB,sBAAsB;EACtB,iBAAiB;EACjB,2BAA2B;EAC3B,6BAA6B;AAC/B","sourcesContent":[".container-list {\n  display: flex;\n  flex-direction: column;\n}\n\n.ul {\n  display: grid;\n  /* background: red; */\n  padding: 0.1em 0.2em;\n  margin: 0.1em 1em;\n  /* grid-template-columns: repeat(5, 1fr); */\n  gap: 0.1em;\n  grid-template-rows: 1fr;\n  grid-auto-flow: column;\n  grid-auto-columns: min-content;\n}\n\n.li {\n  /* margin: 0 0.1em; */\n  list-style: none;\n  /* background: blue; */\n  /* padding: 0.1em 0.1em; */\n  /* vertical-align: center; */\n}\n\n.li>div {\n  width: min-content;\n  height: 3em;\n  padding: 0 0.1em;\n  /* background: green; */\n  display: grid;\n  grid-template-columns: subgrid;\n  justify-items: start;\n  align-items: center;\n}\n\n.seperator {\n  width: 50px;\n  /* height: 10px; */\n  /* background: yellow; */\n  height: 2px;\n  background: gray;\n  align-self: center;\n}\n\n.childConnector {\n  width: 20px;\n  height: 50%;\n  /* background: pink; */\n  /* height: 3px; */\n  /* background: gray; */\n  align-self: start;\n  border-left: 2px solid gray;\n  border-bottom: 2px solid gray;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -795,106 +796,120 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const TestList = () => {
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "container-list" },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
+    const data = [
+        {
+            node: [
+                {
+                    url: "url1",
+                    title: "title1",
+                    hasPrevious: false,
+                    hasChild: false,
+                },
+                {
+                    url: "url2",
+                    title: "title2",
+                    hasPrevious: true,
+                    hasChild: true,
+                    child: [
+                        {
+                            url: "child1",
+                            title: "childtitle1",
+                            hasPrevious: false,
+                            hasChild: false,
+                            isFirstChild: true,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            node: [
+                {
+                    url: "url3",
+                    title: "title3",
+                    hasPrevious: false,
+                    hasChild: true,
+                    child: [
+                        {
+                            url: "child2",
+                            title: "childtitle2",
+                            hasPrevious: true,
+                            hasChild: true,
+                            isFirstChild: true,
+                            child: [
+                                {
+                                    url: "child4",
+                                    title: "childtitle4",
+                                    hasPrevious: false,
+                                    hasChild: false,
+                                    isFirstChild: true,
+                                },
+                            ],
+                        },
+                        {
+                            url: "child3",
+                            title: "childtitle3",
+                            hasPrevious: true,
+                            hasChild: false,
+                        },
+                    ],
+                },
+                {
+                    url: "url4",
+                    title: "title4",
+                    hasPrevious: true,
+                    hasChild: false,
+                },
+            ],
+        },
+    ];
+    // function generateNestedList(nodes: Node[]): string {
+    //   let htmlString = "<ul className='ul'>";
+    //
+    //   for (const node of nodes) {
+    //     htmlString += `<li className='li'><div><p>${node.title}</p></div>`;
+    //
+    //     if (node.hasChild && node.child) {
+    //       htmlString += generateNestedList(node.child);
+    //     }
+    //     htmlString += "</li>";
+    //     if (node.hasSibling) {
+    //       htmlString += `<li><div><div className='seperator'></div></div></li>`;
+    //     }
+    //   }
+    //
+    //   htmlString += "</ul>";
+    //   return htmlString;
+    // }
+    // function generateHTML(tree: Tree): string[] {
+    //   let htmlString: string[] = [];
+    //
+    //   for (const treeNode of tree) {
+    //     htmlString.push(generateNestedList(treeNode.node));
+    //   }
+    //
+    //   return htmlString;
+    // }
+    //
+    function generateNestedList(nodes) {
+        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" }, nodes.map((node, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
+            node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item1"))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" })))),
+            node.hasPrevious && !node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: `sibling-${index}`, className: "li" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" })))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: index, className: "li" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item2"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item2.1"))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item2.2"))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item2.2")))))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3.1")))),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3.2.1"),
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-                                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" }))),
-                                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3.2.1.1"))),
-                                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3.2.1.2")))))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item3.2.2")))))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item4"))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item5"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul" },
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item5.1"))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item5.2"))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator" }))),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li" },
-                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-                                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Item5.3")))))))));
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, node.title)),
+                node.hasChild && node.child && generateNestedList(node.child)))))));
+    }
+    function generateHTML(tree) {
+        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, tree.map((treeNode, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: index }, generateNestedList(treeNode.node))))));
+    }
+    // Call the generateHTML function with your data
+    const jsxOutput = generateHTML(data);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "container-list" }, jsxOutput));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TestList);
 

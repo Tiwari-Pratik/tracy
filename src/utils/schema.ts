@@ -21,6 +21,9 @@ export interface TabInfo {
   url?: string;
   title?: string;
   index: number;
+  hasOpenerId: boolean;
+  openerId?: number;
+  globalIndex: number;
 }
 
 export interface TabNodes {
@@ -30,3 +33,21 @@ export interface TabNodes {
   childNodes: TabNodes[];
   tabId: number;
 }
+
+export type TabNode = {
+  id: number;
+  url: string;
+  type: string;
+  title: string;
+  hasPrevious: boolean;
+  hasChild: boolean;
+  child?: TabNode[];
+  isFirstChild?: boolean;
+  globalIndex: number;
+};
+
+export type TreeNode = {
+  node: TabNode[];
+};
+
+export type TabsTree = TreeNode[];
