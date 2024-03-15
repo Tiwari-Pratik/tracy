@@ -41,7 +41,7 @@ export type TabNode = {
   title: string;
   hasPrevious: boolean;
   hasChild: boolean;
-  child?: TabNode[];
+  child?: TreeNode[];
   isFirstChild?: boolean;
   globalIndex: number;
 };
@@ -49,5 +49,10 @@ export type TabNode = {
 export type TreeNode = {
   node: TabNode[];
 };
+
+export interface NodeWithPath {
+  node: TabNode;
+  path: TreeNode[];
+}
 
 export type TabsTree = TreeNode[];

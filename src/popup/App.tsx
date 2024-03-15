@@ -17,7 +17,8 @@ const App = () => {
         <p key={tab.id}>
           {tab.type} ----
           {tab.id} -----
-          {tab.url}
+          {tab.url} ----
+          {tab.globalIndex}
         </p>
       ))}
     </div>

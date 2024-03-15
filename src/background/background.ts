@@ -4,9 +4,9 @@ import {
   TabIdList,
   TabInfo,
   TabNode,
-  TabNodes,
   TabsTree,
   TreeNode,
+  NodeWithPath,
 } from "../utils/schema";
 import { setTabStates } from "../utils/storage";
 
@@ -38,28 +38,11 @@ chrome.action.onClicked.addListener(function (tab) {
 
 let tabInfo: TabInfo[] = [];
 let globalTabState: TabInfo[] = [];
-// let tabSyncState: TabNodes[] = [];
 let tabIdList: TabIdList = [];
 let childTabIdList: ChildTabIdList = [];
 let removedTabIdList: RemovedTabIdList = [];
-// let allTabStates: Omit<TabNodes, "childNodes">[] = [];
 let historyStates: TabsTree = [];
 let globalIndex: number = 0;
-
-// const getAllTabsInfo = () => {
-//   chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
-//     const tabsArr: OriginalTabInfo[] = [];
-//     tabs.forEach((tab) => {
-//       tabsArr.push({
-//         id: tab.id,
-//         index: tab.index,
-//         url: tab.url,
-//         title: tab.title,
-//       });
-//     });
-//     originalTabsInfo.tabsData = tabsArr;
-//   });
-// };
 
 const syncStatesFirstTime = () => {
   tabInfo.forEach((tab) => {
@@ -80,16 +63,53 @@ const syncStatesFirstTime = () => {
   });
 };
 
-function traverseAndUpdateById(
+function findParentArrayAndUpdate(
   tree: TabsTree,
-  targetId: number,
+  gindex: number,
+  newNode: TabNode,
+  ind: number,
+): void {
+  function traverse(nodes: TabNode[], parentPath: TreeNode[]): void {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+
+      if (node.globalIndex === gindex) {
+        if (node.url === newNode.url) {
+          return;
+        }
+        globalIndex += 1;
+        tabInfo[ind].globalIndex = globalIndex;
+        newNode.globalIndex = globalIndex;
+        // Found the target node, update its parent's node array with the new node
+        const parent = parentPath[parentPath.length - 1];
+        parent.node.push(newNode);
+        return;
+      }
+
+      if (node.hasChild && node.child) {
+        for (const cnode of node.child) {
+          traverse(cnode.node, [...parentPath, cnode]);
+        }
+        // traverse(node.child, [...parentPath, { node }]); // Add the current node to the path
+      }
+    }
+  }
+
+  for (const treeNode of tree) {
+    traverse(treeNode.node, [treeNode]);
+  }
+}
+
+function traverseAndUpdateByGlobalIndex(
+  tree: TabsTree,
+  gindex: number,
   updateFn: (node: TabNode) => void,
 ): boolean {
   let nodeFound = false;
 
   function traverse(nodes: TabNode[]): void {
     for (const node of nodes) {
-      if (node.id === targetId) {
+      if (node.globalIndex === gindex) {
         // Update the properties using the provided update function
         updateFn(node);
         nodeFound = true;
@@ -97,7 +117,7 @@ function traverseAndUpdateById(
       }
 
       if (node.hasChild && node.child) {
-        traverse(node.child);
+        for (const Cnode of node.child) traverse(Cnode.node);
       }
     }
   }
@@ -108,26 +128,27 @@ function traverseAndUpdateById(
 
   return nodeFound;
 }
-const syncStateFromId = (id: number) => {
-  const ind = tabInfo.findIndex((tab) => tab.id === id);
-  if (!tabInfo[ind].hasOpenerId) {
-    const nodeData: TabNode = {
-      type: tabInfo[ind].type,
-      url: tabInfo[ind].url,
-      hasPrevious: false,
-      hasChild: false,
-      title: tabInfo[ind].title,
-      id: tabInfo[ind].id,
-      globalIndex: tabInfo[ind].globalIndex,
-    };
+// const syncStateFromId = (id: number) => {
+//   const ind = tabInfo.findIndex((tab) => tab.id === id);
+//   if (!tabInfo[ind].hasOpenerId) {
+//     const nodeData: TabNode = {
+//       type: tabInfo[ind].type,
+//       url: tabInfo[ind].url,
+//       hasPrevious: false,
+//       hasChild: false,
+//       title: tabInfo[ind].title,
+//       id: tabInfo[ind].id,
+//       globalIndex: tabInfo[ind].globalIndex,
+//     };
+//
+//     const nodeInfo = [nodeData];
+//     historyStates.push({
+//       node: nodeInfo,
+//     });
+//   } else {
+//   }
+// };
 
-    const nodeInfo = [nodeData];
-    historyStates.push({
-      node: nodeInfo,
-    });
-  } else {
-  }
-};
 // adding all the opened tabs for the first time
 chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
   tabs.forEach((tab) => {
@@ -150,6 +171,7 @@ chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
   setTabStates(globalTabState);
 
   console.log({ tabInfo });
+  console.log({ historyStates });
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
   // console.log({ childTabIdList });
@@ -160,10 +182,11 @@ chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
 // tracking when a new tab is created
 chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
   tabIdList.push(newTab.id);
-  globalIndex = +1;
+  globalIndex += 1;
   tabInfo.push({
     type: "created",
     id: newTab.id,
+    title: newTab.title,
     index: newTab.index,
     childId: [],
     changeLog: { url: [], title: [], id: [] },
@@ -176,20 +199,68 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
     tabInfo[ind].childId.push(newTab.id);
     tabInfo[ind].type = "child added";
     const cind = tabInfo.findIndex((tab) => tab.id === newTab.id);
-    (tabInfo[cind].hasOpenerId = true),
-      (tabInfo[cind].openerId = newTab.openerTabId);
+    tabInfo[cind].hasOpenerId = true;
+    tabInfo[cind].openerId = newTab.openerTabId;
   }
   globalTabState = tabInfo;
+
+  if (!newTab.openerTabId) {
+    const nodeData: TabNode = {
+      type: "created",
+      url: newTab.url,
+      hasPrevious: false,
+      hasChild: false,
+      title: newTab.title,
+      id: newTab.id,
+      globalIndex: globalIndex,
+    };
+
+    const nodeInfo = [nodeData];
+    historyStates.push({
+      node: nodeInfo,
+    });
+  } else {
+    const gindex = tabInfo.findIndex((tab) => tab.id === newTab.openerTabId);
+    const newTabGindex = tabInfo[gindex].globalIndex;
+    traverseAndUpdateByGlobalIndex(historyStates, newTabGindex, (node) => {
+      if (!node.hasChild) {
+        const nodeData: TabNode = {
+          type: "created",
+          url: newTab.url,
+          hasPrevious: false,
+          hasChild: false,
+          title: newTab.title,
+          id: newTab.id,
+          globalIndex: globalIndex,
+        };
+        node.child = [
+          {
+            node: [nodeData],
+          },
+        ];
+        node.hasChild = true;
+        node.type = "updated";
+      } else {
+        const nodeData: TabNode = {
+          type: "created",
+          url: newTab.url,
+          hasPrevious: true,
+          hasChild: false,
+          title: newTab.title,
+          id: newTab.id,
+          globalIndex: globalIndex,
+        };
+        node.child.push({
+          node: [nodeData],
+        });
+        node.type = "updated";
+      }
+    });
+  }
   setTabStates(globalTabState);
 
-  // syncTabsfromInfo();
-  // console.log({ allTabStates });
   console.log({ tabInfo });
-  // console.log({ tabIdList });
-  // console.log({ updatedTabIdList });
-  // console.log({ childTabIdList });
-  // console.log({ removedTabIdList });
-  // console.log({ replacedTabIdList });
+  console.log({ historyStates });
 });
 
 //tracking when a tab is deleted
@@ -199,53 +270,95 @@ chrome.tabs.onRemoved.addListener((tabId: number) => {
   tabInfo[ind].type = "removed";
 
   globalTabState = tabInfo;
+  const gindex = tabInfo[ind].globalIndex;
+  traverseAndUpdateByGlobalIndex(historyStates, gindex, (node) => {
+    node.type = "removed";
+  });
   setTabStates(globalTabState);
-  // syncTabsfromInfo();
-  // console.log({ allTabStates });
   console.log({ tabInfo });
-  // console.log({ tabIdList });
-  // console.log({ updatedTabIdList });
-  // console.log({ childTabIdList });
-  // console.log({ removedTabIdList });
-  // console.log({ replacedTabIdList });
+  console.log({ historyStates });
 });
 
 // tracking all the tab updates
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   // console.log({ changeInfo });
+  //
+  // console.log(tab.status);
+  // console.log(tab.active);
 
   const ind = tabInfo.findIndex((tab) => tab.id === tabId);
   if (ind !== -1) {
-    if (tabInfo[ind].changeLog) {
-      tabInfo[ind].type = "updated";
-    }
-    tabInfo[ind].changeLog.id?.push(tabId);
-    if (changeInfo.url) {
-      tabInfo[ind].changeLog.url?.push(changeInfo.url);
-    }
-    if (changeInfo.title) {
-      tabInfo[ind].changeLog.title?.push(changeInfo.title);
-    }
-  }
-  syncTabInfo(tabId);
+    if (tabInfo[ind].type === "created") {
+      tabInfo[ind].changeLog.id?.push(tabId);
+      if (changeInfo.url) {
+        tabInfo[ind].changeLog.url?.push(changeInfo.url);
+      }
+      if (changeInfo.title) {
+        tabInfo[ind].changeLog.title?.push(changeInfo.title);
+      }
+      syncTabInfo(tabId);
+      if (tab.status === "complete") {
+        tabInfo[ind].type = "updated";
+      }
 
-  const tind = tabInfo.findIndex((tab) => tab.id === tabId);
-  if (tabInfo[tind].hasOpenerId) {
-    const openerId = tabInfo[tind].openerId;
-    const oind = tabInfo.findIndex((tab) => tab.id === openerId);
+      // if (tabInfo[ind].changeLog) {
+      //   tabInfo[ind].type = "updated";
+      // }
+    } else if (tabInfo[ind].type !== "removed") {
+      tabInfo[ind].changeLog.id?.push(tabId);
+      if (changeInfo.url) {
+        tabInfo[ind].changeLog.url?.push(changeInfo.url);
+      }
+      if (changeInfo.title) {
+        tabInfo[ind].changeLog.title?.push(changeInfo.title);
+      }
+      updateTabInfo(tabId);
+      if (tab.status === "complete") {
+        tabInfo[ind].type = "updated";
+        const gindex = tabInfo[ind].globalIndex;
+        const nodeData: TabNode = {
+          type: "updated",
+          url: tabInfo[ind].url,
+          hasPrevious: true,
+          hasChild: false,
+          title: tabInfo[ind].title,
+          id: tabInfo[ind].id,
+          globalIndex: gindex,
+        };
+        findParentArrayAndUpdate(historyStates, gindex, nodeData, ind);
+      }
+    }
   }
-  // syncTabsfromInfo();
-  // console.log({ allTabStates });
+
+  globalTabState = tabInfo;
+  setTabStates(globalTabState);
   console.log({ tabInfo });
-  // console.log({ tabIdList });
-  // console.log({ updatedTabIdList });
-  // console.log({ childTabIdList });
-  // console.log({ removedTabIdList });
-  // console.log({ replacedTabIdList });
+  console.log({ historyStates });
 });
 
 const syncTabInfo = (id: number) => {
   const ind = tabInfo.findIndex((tab) => tab.id === id);
+  const gindex = tabInfo[ind].globalIndex;
+  if (ind !== -1) {
+    if (tabInfo[ind].changeLog.url.length !== 0) {
+      tabInfo[ind].url = tabInfo[ind].changeLog.url.at(-1);
+      traverseAndUpdateByGlobalIndex(historyStates, gindex, (node) => {
+        node.url = tabInfo[ind].url;
+        node.type = "updated";
+      });
+    }
+    if (tabInfo[ind].changeLog.title.length !== 0) {
+      tabInfo[ind].title = tabInfo[ind].changeLog.title.at(-1);
+      traverseAndUpdateByGlobalIndex(historyStates, gindex, (node) => {
+        node.title = tabInfo[ind].title;
+      });
+    }
+  }
+};
+
+const updateTabInfo = (id: number) => {
+  const ind = tabInfo.findIndex((tab) => tab.id === id);
+  const gindex = tabInfo[ind].globalIndex;
   if (ind !== -1) {
     if (tabInfo[ind].changeLog.url.length !== 0) {
       tabInfo[ind].url = tabInfo[ind].changeLog.url.at(-1);
@@ -254,7 +367,4 @@ const syncTabInfo = (id: number) => {
       tabInfo[ind].title = tabInfo[ind].changeLog.title.at(-1);
     }
   }
-
-  globalTabState = tabInfo;
-  setTabStates(globalTabState);
 };

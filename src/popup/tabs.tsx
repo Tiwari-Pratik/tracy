@@ -37,7 +37,8 @@ const UpdatedTabs: React.FC = () => {
   ];
   return (
     <div className="tabList">
-      <TestList />
+      {/*<TestList />*/}
+      <p>Tree</p>
     </div>
   );
 };
