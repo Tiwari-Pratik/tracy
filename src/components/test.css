@@ -23,8 +23,8 @@
   /* vertical-align: center; */
 }
 
-.li>div {
-  width: min-content;
+.li > div {
+  width: max-content;
   height: 3em;
   padding: 0 0.1em;
   /* background: green; */
@@ -32,6 +32,14 @@
   grid-template-columns: subgrid;
   justify-items: start;
   align-items: center;
+}
+
+.li > div > p {
+  width: max-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .seperator {

@@ -3,42 +3,17 @@ import TabNode from "../components/tabnode";
 import "./tabs.css";
 import Connector from "../components/connector";
 import TestList from "../components/text";
+import { TabsTree } from "../utils/schema";
 
-const UpdatedTabs: React.FC = () => {
-  const data = [
-    {
-      urls: ["url1", "url2"],
-      titles: ["title1", "title2"],
-      children: [
-        {
-          urls: ["url3", "url4"],
-          titles: ["title3", "title4"],
-        },
-        {
-          urls: ["url5", "url6"],
-          titles: ["title5", "title6"],
-        },
-      ],
-    },
-    {
-      urls: ["url1"],
-      titles: ["title1"],
-      children: [
-        {
-          urls: ["url3", "url4"],
-          titles: ["title3", "title4"],
-        },
-        {
-          urls: ["url5"],
-          titles: ["title5"],
-        },
-      ],
-    },
-  ];
+interface Props {
+  data: TabsTree
+}
+const UpdatedTabs = ({data}:Props) => {
+
   return (
     <div className="tabList">
-      {/*<TestList />*/}
-      <p>Tree</p>
+      <TestList data={data} />
+      {/* <p>Tree</p> */}
     </div>
   );
 };

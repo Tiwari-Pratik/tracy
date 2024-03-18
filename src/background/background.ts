@@ -37,7 +37,9 @@ chrome.action.onClicked.addListener(function (tab) {
 });
 
 let tabInfo: TabInfo[] = [];
-let globalTabState: TabInfo[] = [];
+// let globalTabState: TabInfo[] = [];
+let globalTabState: TabsTree = [];
+
 let tabIdList: TabIdList = [];
 let childTabIdList: ChildTabIdList = [];
 let removedTabIdList: RemovedTabIdList = [];
@@ -128,26 +130,7 @@ function traverseAndUpdateByGlobalIndex(
 
   return nodeFound;
 }
-// const syncStateFromId = (id: number) => {
-//   const ind = tabInfo.findIndex((tab) => tab.id === id);
-//   if (!tabInfo[ind].hasOpenerId) {
-//     const nodeData: TabNode = {
-//       type: tabInfo[ind].type,
-//       url: tabInfo[ind].url,
-//       hasPrevious: false,
-//       hasChild: false,
-//       title: tabInfo[ind].title,
-//       id: tabInfo[ind].id,
-//       globalIndex: tabInfo[ind].globalIndex,
-//     };
-//
-//     const nodeInfo = [nodeData];
-//     historyStates.push({
-//       node: nodeInfo,
-//     });
-//   } else {
-//   }
-// };
+
 
 // adding all the opened tabs for the first time
 chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
@@ -166,12 +149,14 @@ chrome.tabs.query({}, function (tabs: chrome.tabs.Tab[]) {
       globalIndex: globalIndex,
     });
   });
-  globalTabState = tabInfo;
+  // globalTabState = tabInfo;
+  globalTabState = historyStates;
+
   syncStatesFirstTime();
   setTabStates(globalTabState);
 
-  console.log({ tabInfo });
-  console.log({ historyStates });
+  // console.log({ tabInfo });
+  // console.log({ historyStates });
   // console.log({ tabIdList });
   // console.log({ updatedTabIdList });
   // console.log({ childTabIdList });
@@ -202,7 +187,8 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
     tabInfo[cind].hasOpenerId = true;
     tabInfo[cind].openerId = newTab.openerTabId;
   }
-  globalTabState = tabInfo;
+  // globalTabState = tabInfo;
+
 
   if (!newTab.openerTabId) {
     const nodeData: TabNode = {
@@ -232,6 +218,7 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
           title: newTab.title,
           id: newTab.id,
           globalIndex: globalIndex,
+          isFirstChild:true
         };
         node.child = [
           {
@@ -257,10 +244,11 @@ chrome.tabs.onCreated.addListener((newTab: chrome.tabs.Tab) => {
       }
     });
   }
+  globalTabState = historyStates;
   setTabStates(globalTabState);
 
-  console.log({ tabInfo });
-  console.log({ historyStates });
+  // console.log({ tabInfo });
+  // console.log({ historyStates });
 });
 
 //tracking when a tab is deleted
@@ -269,14 +257,18 @@ chrome.tabs.onRemoved.addListener((tabId: number) => {
   const ind = tabInfo.findIndex((tab) => tab.id === tabId);
   tabInfo[ind].type = "removed";
 
-  globalTabState = tabInfo;
+  // globalTabState = tabInfo;
+  
+
   const gindex = tabInfo[ind].globalIndex;
   traverseAndUpdateByGlobalIndex(historyStates, gindex, (node) => {
     node.type = "removed";
   });
+
+  globalTabState = historyStates;
   setTabStates(globalTabState);
-  console.log({ tabInfo });
-  console.log({ historyStates });
+  // console.log({ tabInfo });
+  // console.log({ historyStates });
 });
 
 // tracking all the tab updates
@@ -330,10 +322,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
   }
 
-  globalTabState = tabInfo;
+  // globalTabState = tabInfo;
+  globalTabState = historyStates;
+
   setTabStates(globalTabState);
-  console.log({ tabInfo });
-  console.log({ historyStates });
+  // console.log({ tabInfo });
+  // console.log({ historyStates });
 });
 
 const syncTabInfo = (id: number) => {
