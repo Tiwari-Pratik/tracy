@@ -1,3 +1,23 @@
 .popup {
   font-size: 2rem;
 }
+
+.update-button {
+  padding: 0.7rem 1.2rem;
+  margin-left: 3rem;
+  margin-top: 1.5rem;
+  background-color: #cee1f2;
+  color: #005fb8;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px #dce5ee;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+button:hover {
+  box-shadow: 0px 5px 5px #c7ced4;
+}

@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Tracy",
-  "description": "chrome extension made using React",
+  "description": "chrome extension for Tab state management",
   "version": "1.0.0",
   "action": {
-    "default_title": "React extension",
+    "default_title": "Tracy",
     "default_icon": "icon.png"
   },
   "icons": {

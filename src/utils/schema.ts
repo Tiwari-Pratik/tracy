@@ -2,12 +2,7 @@ export type TabIdList = number[];
 export type ChildTabIdList = number[];
 export type RemovedTabIdList = number[];
 
-export interface OriginalTabInfo {
-  id: number;
-  index: number;
-  url: string;
-  title: string;
-}
+
 export interface ChangeInfo {
   url: string[];
   title: string[];
@@ -26,13 +21,6 @@ export interface TabInfo {
   globalIndex: number;
 }
 
-export interface TabNodes {
-  urls: string[];
-  type: string;
-  titles: string[];
-  childNodes: TabNodes[];
-  tabId: number;
-}
 
 export type TabNode = {
   id: number;
@@ -50,9 +38,5 @@ export type TreeNode = {
   node: TabNode[];
 };
 
-export interface NodeWithPath {
-  node: TabNode;
-  path: TreeNode[];
-}
 
 export type TabsTree = TreeNode[];

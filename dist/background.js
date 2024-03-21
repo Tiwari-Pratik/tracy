@@ -10,33 +10,12 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getGlobalTabStates: () => (/* binding */ getGlobalTabStates),
 /* harmony export */   getTabStates: () => (/* binding */ getTabStates),
+/* harmony export */   setGlobalTabStates: () => (/* binding */ setGlobalTabStates),
 /* harmony export */   setTabStates: () => (/* binding */ setTabStates)
 /* harmony export */ });
-// export const setTabStates = (tabsInfoData: TabInfo[]): Promise<void> => {
-//   // let existingState: TabInfo[][] = [];
-//   // getTabStates().then((tabsArray) => {
-//   //   existingState = tabsArray;
-//   // });
-//   // if (existingState.length !== 0) {
-//   //   existingState.push(tabsInfoData);
-//   // }
-//   const vals: LocalTabState = {
-//     tabStates: tabsInfoData,
-//   };
-//   return new Promise((resolve) => {
-//     chrome.storage.local.set(vals, () => resolve());
-//     // chrome.runtime.sendMessage({ action: "update" });
-//   });
-// };
 const setTabStates = (tabsInfoData) => {
-    // let existingState: TabInfo[][] = [];
-    // getTabStates().then((tabsArray) => {
-    //   existingState = tabsArray;
-    // });
-    // if (existingState.length !== 0) {
-    //   existingState.push(tabsInfoData);
-    // }
     const vals = {
         tabStates: tabsInfoData,
     };
@@ -45,20 +24,39 @@ const setTabStates = (tabsInfoData) => {
         // chrome.runtime.sendMessage({ action: "update" });
     });
 };
-// export const getTabStates = (): Promise<TabInfo[]> => {
-//   const keys: LocalTabSatteKeys[] = ["tabStates"];
-//   return new Promise((resolve) => {
-//     chrome.storage.local.get(keys, (res: LocalTabState) => {
-//       resolve(res.tabStates ?? []);
-//     });
-//   });
-// };
 const getTabStates = () => {
     const keys = ["tabStates"];
     return new Promise((resolve) => {
         chrome.storage.local.get(keys, (res) => {
             var _a;
             resolve((_a = res.tabStates) !== null && _a !== void 0 ? _a : []);
+        });
+    });
+};
+const setGlobalTabStates = (tabsInfoDataArray) => {
+    const vals = {
+        allStates: tabsInfoDataArray
+    };
+    return new Promise((resolve) => {
+        chrome.storage.local.set(vals, () => resolve());
+        // chrome.runtime.sendMessage({ action: "update" });
+    });
+};
+const dateOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+};
+const getGlobalTabStates = () => {
+    const keys = ["allStates"];
+    return new Promise((resolve) => {
+        chrome.storage.local.get(keys, (res) => {
+            var _a;
+            resolve((_a = res.allStates) !== null && _a !== void 0 ? _a : [{
+                    date: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+                    tabStates: []
+                }]);
         });
     });
 };
@@ -132,9 +130,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/storage */ "./src/utils/storage.ts");
 
 let existingTabId = null;
+let tabInfo = [];
+// let globalTabState: TabInfo[] = [];
+let globalTabState = [];
+let tabIdList = [];
+let childTabIdList = [];
+let removedTabIdList = [];
+let historyStates = [];
+let globalIndex = 0;
 chrome.runtime.onInstalled.addListener((event) => {
+    // if (event.reason === "install" || event.reason === "update") {
+    // }
     (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setTabStates)([]);
+    (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setGlobalTabStates)([]);
 });
+chrome.windows.onRemoved.addListener(function (windowId) {
+    // Check if all windows are closed
+    chrome.windows.getAll(function (windows) {
+        if (windows.length === 0) {
+            console.log("On ending");
+            tabInfo = [];
+            historyStates = [];
+            globalTabState = [];
+            globalIndex = 0;
+            (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.getGlobalTabStates)().then(allStates => {
+                if (allStates.length !== 0) {
+                    const oldStates = allStates;
+                    const updatedState = {
+                        date: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+                        tabStates: []
+                    };
+                    // oldStates.at(-1).date = updatedState.date
+                    // oldStates.at(-1).tabStates = updatedState.tabStates
+                    const updatedStates = [...oldStates];
+                    updatedStates.push(updatedState);
+                    (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setGlobalTabStates)(updatedStates);
+                }
+            });
+        }
+    });
+});
+// chrome.runtime.onStartup.addListener(() => {
+//   console.log("On startup")
+//   getGlobalTabStates().then(allStates => {
+//     if (allStates.length !== 0) {
+//       const oldStates = allStates
+//       const updatedState:StatesData = {
+//         date: new Date().toDateString(),
+//         tabStates: []
+//       }
+//       // oldStates.at(-1).date = updatedState.date
+//       // oldStates.at(-1).tabStates = updatedState.tabStates
+//       const updatedStates = [...oldStates]
+//       updatedStates.push(updatedState)
+//       setGlobalTabStates(updatedStates)
+//     }
+//   })
+// })
 chrome.action.onClicked.addListener(function (tab) {
     if (existingTabId) {
         chrome.tabs.get(existingTabId, function (tab) {
@@ -156,14 +208,6 @@ chrome.action.onClicked.addListener(function (tab) {
         });
     }
 });
-let tabInfo = [];
-// let globalTabState: TabInfo[] = [];
-let globalTabState = [];
-let tabIdList = [];
-let childTabIdList = [];
-let removedTabIdList = [];
-let historyStates = [];
-let globalIndex = 0;
 const syncStatesFirstTime = () => {
     tabInfo.forEach((tab) => {
         const nodeData = {
@@ -230,6 +274,19 @@ function traverseAndUpdateByGlobalIndex(tree, gindex, updateFn) {
     }
     return nodeFound;
 }
+const updateStorage = () => {
+    (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.getGlobalTabStates)().then(allStates => {
+        const oldStates = allStates;
+        const updatedState = {
+            date: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+            tabStates: globalTabState
+        };
+        oldStates.at(-1).date = updatedState.date;
+        oldStates.at(-1).tabStates = updatedState.tabStates;
+        const updatedStates = [...oldStates];
+        (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setGlobalTabStates)(updatedStates);
+    });
+};
 // adding all the opened tabs for the first time
 chrome.tabs.query({}, function (tabs) {
     tabs.forEach((tab) => {
@@ -251,13 +308,10 @@ chrome.tabs.query({}, function (tabs) {
     globalTabState = historyStates;
     syncStatesFirstTime();
     (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setTabStates)(globalTabState);
+    // setGlobalTabStates(globalTabState)
+    updateStorage();
     // console.log({ tabInfo });
     // console.log({ historyStates });
-    // console.log({ tabIdList });
-    // console.log({ updatedTabIdList });
-    // console.log({ childTabIdList });
-    // console.log({ removedTabIdList });
-    // console.log({ replacedTabIdList });
 });
 // tracking when a new tab is created
 chrome.tabs.onCreated.addListener((newTab) => {
@@ -330,6 +384,7 @@ chrome.tabs.onCreated.addListener((newTab) => {
                     title: newTab.title,
                     id: newTab.id,
                     globalIndex: globalIndex,
+                    isFirstChild: true
                 };
                 node.child.push({
                     node: [nodeData],
@@ -340,6 +395,8 @@ chrome.tabs.onCreated.addListener((newTab) => {
     }
     globalTabState = historyStates;
     (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setTabStates)(globalTabState);
+    // setGlobalTabStates(globalTabState)
+    updateStorage();
     // console.log({ tabInfo });
     // console.log({ historyStates });
 });
@@ -355,15 +412,14 @@ chrome.tabs.onRemoved.addListener((tabId) => {
     });
     globalTabState = historyStates;
     (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setTabStates)(globalTabState);
+    // setGlobalTabStates(globalTabState)
+    updateStorage();
     // console.log({ tabInfo });
     // console.log({ historyStates });
 });
 // tracking all the tab updates
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     // console.log({ changeInfo });
-    //
-    // console.log(tab.status);
-    // console.log(tab.active);
     var _a, _b, _c, _d, _e, _f;
     const ind = tabInfo.findIndex((tab) => tab.id === tabId);
     if (ind !== -1) {
@@ -379,9 +435,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             if (tab.status === "complete") {
                 tabInfo[ind].type = "updated";
             }
-            // if (tabInfo[ind].changeLog) {
-            //   tabInfo[ind].type = "updated";
-            // }
         }
         else if (tabInfo[ind].type !== "removed") {
             (_d = tabInfo[ind].changeLog.id) === null || _d === void 0 ? void 0 : _d.push(tabId);
@@ -411,6 +464,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     // globalTabState = tabInfo;
     globalTabState = historyStates;
     (0,_utils_storage__WEBPACK_IMPORTED_MODULE_0__.setTabStates)(globalTabState);
+    // setGlobalTabStates(globalTabState)
+    updateStorage();
     // console.log({ tabInfo });
     // console.log({ historyStates });
 });

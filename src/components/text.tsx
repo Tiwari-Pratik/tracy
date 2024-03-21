@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, MouseEvent } from "react";
 import "./test.css";
 import { TabNode, TabsTree } from "../utils/schema";
 
@@ -6,128 +6,74 @@ interface Props {
   data:TabsTree
 }
 const TestList = ({data}:Props) => {
-  // type Node = {
-  //   url: string;
-  //   title: string;
-  //   hasPrevious: boolean;
-  //   hasChild: boolean;
-  //   child?: TreeNode[];
-  //   isFirstChild?: boolean;
-  // };
-
-  // type TreeNode = {
-  //   node: Node[];
-  // };
-
-  // type Tree = TreeNode[];
-
-//   const customData: Tree = [
-//     {
-//       node: [
-//         {
-//           url: "url1",
-//           title: "title1",
-//           hasPrevious: false,
-//           hasChild: false,
-//         },
-//         {
-//           url: "url2",
-//           title: "title2",
-//           hasPrevious: true,
-//           hasChild: true,
-//           child: [
-//             {
-//               node: [
-
-//                 {
-//                   url: "child1",
-//                   title: "childtitle1",
-//                   hasPrevious: false,
-//                   hasChild: false,
-//                   isFirstChild: true,
-//                 },
-            
-//           ]
-//         }
-           
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       node: [
-//         {
-//           url: "url3",
-//           title: "title3",
-//           hasPrevious: false,
-//           hasChild: true,
-//           child: [
-//             {
-//               node: [
-//                 {
-//                   url: "child2",
-//                   title: "childtitle2",
-//                   hasPrevious: true,
-//                   hasChild: true,
-//                   isFirstChild: true,
-//                   child: [
-//                     {
-//                       node: [
-//                         {
-//                           url: "child4",
-//                           title: "childtitle4",
-//                           hasPrevious: false,
-//                           hasChild: false,
-//                           isFirstChild: true,
-//                         },
-//                       ]
-// }
-//                   ],
-//                 },
-//                 {
-//                   url: "child3",
-//                   title: "childtitle3",
-//                   hasPrevious: true,
-//                   hasChild: false,
-//                 },
-//    ]
-//  }
-//           ],
-//         },
-//         {
-//           url: "url4",
-//           title: "title4",
-//           hasPrevious: true,
-//           hasChild: false,
-//         },
-//       ],
-//     },
-//   ];
-
-
+ 
+  let mykey = 0
 
   function generateNestedList(nodes: TabNode[]): JSX.Element {
+
+
+    function switchToTabOrOpenNew(url) {
+      chrome.tabs.query({}, function(tabs) {
+          // Check if any tab has the given URL
+          let tabExists = tabs.some(function(tab) {
+              return tab.url === url;
+          });
+  
+          if (tabExists) {
+              // Switch to the existing tab with the given URL
+              let existingTab = tabs.find(function(tab) {
+                  return tab.url === url;
+              });
+              chrome.tabs.update(existingTab.id, { active: true });
+          } else {
+              // Open a new tab with the given URL
+              chrome.tabs.create({ url: url });
+          }
+      });
+    }
+    
+    const linkClickHandler = (event: MouseEvent) => {
+      event.preventDefault();
+
+      // console.log(event.currentTarget)
+      if (event.currentTarget instanceof HTMLAnchorElement) {
+
+        const linkEl = event.currentTarget as HTMLAnchorElement
+        const url = linkEl.href
+        console.log(url)
+        if (url) {
+          switchToTabOrOpenNew(url)
+        }
+      }
+
+    }
+
+    console.log(mykey)
+
     return (
-      <ul className="ul" key={`ul-${Math.floor((Math.random() * 100) + 1)}`}>
+      <ul className="ul" key={++mykey}>
         {nodes.map((node, index) => (
-          <Fragment>
+          <Fragment key={++mykey}>
             {node.isFirstChild && (
-              <li className="li" key={`node-${node.globalIndex}`}>
-                <div key={`node-div-${node.globalIndex}`}>
-                  <div className="childConnector" key={`node-div-div-${node.globalIndex}`}></div>
+              <li className="li" key={++mykey}>
+                <div key={++mykey}>
+                  <div className="childConnector" key={++mykey}></div>
                 </div>
               </li>
             )}
             {node.hasPrevious && !node.isFirstChild && (
-              <li key={`sibling-${index}`} className="li">
-                <div key={`sibling-div-${index}`}>
-                  <div className="seperator" key={`sibling-div-div${index}`}></div>
+              <li key={++mykey} className="li">
+                <div key={++mykey}>
+                  <div className="seperator" key={++mykey}></div>
                 </div>
               </li>
             )}
-            <li key={`li-${index}`} className="li">
-              <div key={`li-div-${index}`}>
-                <p key={`li-div-p${index}`}>{node.url}</p>
+            <li key={++mykey} className="li">
+              <div key={++mykey}>
+                <a href={node.url} onClick={linkClickHandler} className="anchor">
+                <p key={node.globalIndex} className={node.type === "removed"?"paragraph removed": "paragraph"}>{node.url.split("://")[1]}</p>
+                </a>
+                
               </div>
               {node.hasChild && node.child && node.child.map(cnode => generateNestedList(cnode.node))}
             </li>
@@ -141,7 +87,7 @@ const TestList = ({data}:Props) => {
     return (
       <>
         {tree?.map((treeNode, index) => (
-          <div key={`div-${index}`}>{generateNestedList(treeNode?.node)}</div>
+          <div key={`div-${++mykey}`}>{generateNestedList(treeNode?.node)}</div>
         ))}
       </>
     );

@@ -1,9 +1,21 @@
 .tabList {
   margin: 5em 0;
+  margin-left: 3rem;
+  margin-top: 2rem;
   /* padding: 0.5em 1em; */
   /* background: red; */
   /* width: 100vw; */
   /* display: flex; */
   /* justify-content: start; */
   /* align-items: center; */
+}
+
+h2 {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1rem;
+  color: #233443;
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }

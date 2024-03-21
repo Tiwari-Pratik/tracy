@@ -20,10 +20,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   display: flex;
   flex-direction: column;
+  font-family: "Space Mono", monospace;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 0.9rem;
 }
 
 .ul {
@@ -36,6 +41,21 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   grid-template-rows: 1fr;
   grid-auto-flow: column;
   grid-auto-columns: min-content;
+  /* position: relative; */
+}
+
+.container-list > div {
+  position: relative;
+}
+.container-list > div::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  position: absolute;
+  top: 28px;
+  left: 0;
+  background-color: gray;
+  /* margin-right: 1rem; */
 }
 
 .li {
@@ -57,14 +77,36 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   align-items: center;
 }
 
-.li > div > p {
+/* .li > div > p {
   width: max-content;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
-}
+  padding: 2px 4px;
+  background-color: #eef3fc;
+  border-radius: 5px;
+  color: #274054;
+} */
 
+.anchor {
+  text-decoration: none;
+  cursor:pointer
+}
+.paragraph {
+  width: max-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  padding: 2px 4px;
+  background-color: #eef3fc;
+  border-radius: 5px;
+  color: #274054;
+}
+.removed {
+  color: #ff4747;
+}
 .seperator {
   width: 50px;
   /* height: 10px; */
@@ -72,6 +114,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   height: 2px;
   background: gray;
   align-self: center;
+  margin-top: 10px;
 }
 
 .childConnector {
@@ -83,8 +126,9 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.container-list {
   align-self: start;
   border-left: 2px solid gray;
   border-bottom: 2px solid gray;
+  margin-top: 5px;
 }
-`, "",{"version":3,"sources":["webpack://./src/components/test.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,qBAAqB;EACrB,oBAAoB;EACpB,iBAAiB;EACjB,2CAA2C;EAC3C,UAAU;EACV,uBAAuB;EACvB,sBAAsB;EACtB,8BAA8B;AAChC;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,sBAAsB;EACtB,0BAA0B;EAC1B,4BAA4B;AAC9B;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,8BAA8B;EAC9B,oBAAoB;EACpB,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;EAChB,uBAAuB;EACvB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,wBAAwB;EACxB,WAAW;EACX,gBAAgB;EAChB,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,sBAAsB;EACtB,iBAAiB;EACjB,sBAAsB;EACtB,iBAAiB;EACjB,2BAA2B;EAC3B,6BAA6B;AAC/B","sourcesContent":[".container-list {\n  display: flex;\n  flex-direction: column;\n}\n\n.ul {\n  display: grid;\n  /* background: red; */\n  padding: 0.1em 0.2em;\n  margin: 0.1em 1em;\n  /* grid-template-columns: repeat(5, 1fr); */\n  gap: 0.1em;\n  grid-template-rows: 1fr;\n  grid-auto-flow: column;\n  grid-auto-columns: min-content;\n}\n\n.li {\n  /* margin: 0 0.1em; */\n  list-style: none;\n  /* background: blue; */\n  /* padding: 0.1em 0.1em; */\n  /* vertical-align: center; */\n}\n\n.li > div {\n  width: max-content;\n  height: 3em;\n  padding: 0 0.1em;\n  /* background: green; */\n  display: grid;\n  grid-template-columns: subgrid;\n  justify-items: start;\n  align-items: center;\n}\n\n.li > div > p {\n  width: max-content;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 200px;\n}\n\n.seperator {\n  width: 50px;\n  /* height: 10px; */\n  /* background: yellow; */\n  height: 2px;\n  background: gray;\n  align-self: center;\n}\n\n.childConnector {\n  width: 20px;\n  height: 50%;\n  /* background: pink; */\n  /* height: 3px; */\n  /* background: gray; */\n  align-self: start;\n  border-left: 2px solid gray;\n  border-bottom: 2px solid gray;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/components/test.css"],"names":[],"mappings":"AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,oCAAoC;EACpC,gBAAgB;EAChB,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,qBAAqB;EACrB,oBAAoB;EACpB,iBAAiB;EACjB,2CAA2C;EAC3C,UAAU;EACV,uBAAuB;EACvB,sBAAsB;EACtB,8BAA8B;EAC9B,wBAAwB;AAC1B;;AAEA;EACE,kBAAkB;AACpB;AACA;EACE,WAAW;EACX,WAAW;EACX,WAAW;EACX,kBAAkB;EAClB,SAAS;EACT,OAAO;EACP,sBAAsB;EACtB,wBAAwB;AAC1B;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,sBAAsB;EACtB,0BAA0B;EAC1B,4BAA4B;AAC9B;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,8BAA8B;EAC9B,oBAAoB;EACpB,mBAAmB;AACrB;;AAEA;;;;;;;;;;GAUG;;AAEH;EACE,qBAAqB;EACrB;AACF;AACA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,gBAAgB;EAChB,uBAAuB;EACvB,gBAAgB;EAChB,gBAAgB;EAChB,yBAAyB;EACzB,kBAAkB;EAClB,cAAc;AAChB;AACA;EACE,cAAc;AAChB;AACA;EACE,WAAW;EACX,kBAAkB;EAClB,wBAAwB;EACxB,WAAW;EACX,gBAAgB;EAChB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,sBAAsB;EACtB,iBAAiB;EACjB,sBAAsB;EACtB,iBAAiB;EACjB,2BAA2B;EAC3B,6BAA6B;EAC7B,eAAe;AACjB","sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap\");\n\n.container-list {\n  display: flex;\n  flex-direction: column;\n  font-family: \"Space Mono\", monospace;\n  font-weight: 500;\n  font-style: normal;\n  font-size: 0.9rem;\n}\n\n.ul {\n  display: grid;\n  /* background: red; */\n  padding: 0.1em 0.2em;\n  margin: 0.1em 1em;\n  /* grid-template-columns: repeat(5, 1fr); */\n  gap: 0.1em;\n  grid-template-rows: 1fr;\n  grid-auto-flow: column;\n  grid-auto-columns: min-content;\n  /* position: relative; */\n}\n\n.container-list > div {\n  position: relative;\n}\n.container-list > div::before {\n  content: \"\";\n  width: 10px;\n  height: 2px;\n  position: absolute;\n  top: 28px;\n  left: 0;\n  background-color: gray;\n  /* margin-right: 1rem; */\n}\n\n.li {\n  /* margin: 0 0.1em; */\n  list-style: none;\n  /* background: blue; */\n  /* padding: 0.1em 0.1em; */\n  /* vertical-align: center; */\n}\n\n.li > div {\n  width: max-content;\n  height: 3em;\n  padding: 0 0.1em;\n  /* background: green; */\n  display: grid;\n  grid-template-columns: subgrid;\n  justify-items: start;\n  align-items: center;\n}\n\n/* .li > div > p {\n  width: max-content;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 200px;\n  padding: 2px 4px;\n  background-color: #eef3fc;\n  border-radius: 5px;\n  color: #274054;\n} */\n\n.anchor {\n  text-decoration: none;\n  cursor:pointer\n}\n.paragraph {\n  width: max-content;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 200px;\n  padding: 2px 4px;\n  background-color: #eef3fc;\n  border-radius: 5px;\n  color: #274054;\n}\n.removed {\n  color: #ff4747;\n}\n.seperator {\n  width: 50px;\n  /* height: 10px; */\n  /* background: yellow; */\n  height: 2px;\n  background: gray;\n  align-self: center;\n  margin-top: 10px;\n}\n\n.childConnector {\n  width: 20px;\n  height: 50%;\n  /* background: pink; */\n  /* height: 3px; */\n  /* background: gray; */\n  align-self: start;\n  border-left: 2px solid gray;\n  border-bottom: 2px solid gray;\n  margin-top: 5px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -113,7 +157,27 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, `.popup {
   font-size: 2rem;
 }
-`, "",{"version":3,"sources":["webpack://./src/popup/App.css"],"names":[],"mappings":"AAAA;EACE,eAAe;AACjB","sourcesContent":[".popup {\n  font-size: 2rem;\n}\n"],"sourceRoot":""}]);
+
+.update-button {
+  padding: 0.7rem 1.2rem;
+  margin-left: 3rem;
+  margin-top: 1.5rem;
+  background-color: #cee1f2;
+  color: #005fb8;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px #dce5ee;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+button:hover {
+  box-shadow: 0px 5px 5px #c7ced4;
+}
+`, "",{"version":3,"sources":["webpack://./src/popup/App.css"],"names":[],"mappings":"AAAA;EACE,eAAe;AACjB;;AAEA;EACE,sBAAsB;EACtB,iBAAiB;EACjB,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;EACd,YAAY;EACZ,kBAAkB;EAClB,+BAA+B;EAC/B,eAAe;EACf,gBAAgB;EAChB,gBAAgB;EAChB,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,+BAA+B;AACjC","sourcesContent":[".popup {\n  font-size: 2rem;\n}\n\n.update-button {\n  padding: 0.7rem 1.2rem;\n  margin-left: 3rem;\n  margin-top: 1.5rem;\n  background-color: #cee1f2;\n  color: #005fb8;\n  border: none;\n  border-radius: 5px;\n  box-shadow: 0px 3px 5px #dce5ee;\n  font-size: 1rem;\n  font-weight: 400;\n  margin-bottom: 0;\n  cursor: pointer;\n  transition: all 200ms;\n}\n\nbutton:hover {\n  box-shadow: 0px 5px 5px #c7ced4;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -139,12 +203,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `body {
+___CSS_LOADER_EXPORT___.push([module.id, `
+
+body {
   width: 400px;
   height: 400px;
-  background-color: greenyellow;
+  /* background-color: greenyellow; */
 }
-`, "",{"version":3,"sources":["webpack://./src/popup/popup.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,aAAa;EACb,6BAA6B;AAC/B","sourcesContent":["body {\n  width: 400px;\n  height: 400px;\n  background-color: greenyellow;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/popup/popup.css"],"names":[],"mappings":";;AAEA;EACE,YAAY;EACZ,aAAa;EACb,mCAAmC;AACrC","sourcesContent":["\n\nbody {\n  width: 400px;\n  height: 400px;\n  /* background-color: greenyellow; */\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -172,6 +238,8 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.tabList {
   margin: 5em 0;
+  margin-left: 3rem;
+  margin-top: 2rem;
   /* padding: 0.5em 1em; */
   /* background: red; */
   /* width: 100vw; */
@@ -179,7 +247,17 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.tabList {
   /* justify-content: start; */
   /* align-items: center; */
 }
-`, "",{"version":3,"sources":["webpack://./src/popup/tabs.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,wBAAwB;EACxB,qBAAqB;EACrB,kBAAkB;EAClB,mBAAmB;EACnB,4BAA4B;EAC5B,yBAAyB;AAC3B","sourcesContent":[".tabList {\n  margin: 5em 0;\n  /* padding: 0.5em 1em; */\n  /* background: red; */\n  /* width: 100vw; */\n  /* display: flex; */\n  /* justify-content: start; */\n  /* align-items: center; */\n}\n"],"sourceRoot":""}]);
+
+h2 {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1rem;
+  color: #233443;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+`, "",{"version":3,"sources":["webpack://./src/popup/tabs.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,iBAAiB;EACjB,gBAAgB;EAChB,wBAAwB;EACxB,qBAAqB;EACrB,kBAAkB;EAClB,mBAAmB;EACnB,4BAA4B;EAC5B,yBAAyB;AAC3B;;AAEA;EACE,oCAAoC;EACpC,gBAAgB;EAChB,kBAAkB;EAClB,eAAe;EACf,cAAc;EACd,0BAA0B;EAC1B,0BAA0B;AAC5B","sourcesContent":[".tabList {\n  margin: 5em 0;\n  margin-left: 3rem;\n  margin-top: 2rem;\n  /* padding: 0.5em 1em; */\n  /* background: red; */\n  /* width: 100vw; */\n  /* display: flex; */\n  /* justify-content: start; */\n  /* align-items: center; */\n}\n\nh2 {\n  font-family: \"Space Mono\", monospace;\n  font-weight: 700;\n  font-style: normal;\n  font-size: 1rem;\n  color: #233443;\n  text-decoration: underline;\n  text-underline-offset: 5px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -804,112 +882,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const TestList = ({ data }) => {
-    // type Node = {
-    //   url: string;
-    //   title: string;
-    //   hasPrevious: boolean;
-    //   hasChild: boolean;
-    //   child?: TreeNode[];
-    //   isFirstChild?: boolean;
-    // };
-    // type TreeNode = {
-    //   node: Node[];
-    // };
-    // type Tree = TreeNode[];
-    //   const customData: Tree = [
-    //     {
-    //       node: [
-    //         {
-    //           url: "url1",
-    //           title: "title1",
-    //           hasPrevious: false,
-    //           hasChild: false,
-    //         },
-    //         {
-    //           url: "url2",
-    //           title: "title2",
-    //           hasPrevious: true,
-    //           hasChild: true,
-    //           child: [
-    //             {
-    //               node: [
-    //                 {
-    //                   url: "child1",
-    //                   title: "childtitle1",
-    //                   hasPrevious: false,
-    //                   hasChild: false,
-    //                   isFirstChild: true,
-    //                 },
-    //           ]
-    //         }
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       node: [
-    //         {
-    //           url: "url3",
-    //           title: "title3",
-    //           hasPrevious: false,
-    //           hasChild: true,
-    //           child: [
-    //             {
-    //               node: [
-    //                 {
-    //                   url: "child2",
-    //                   title: "childtitle2",
-    //                   hasPrevious: true,
-    //                   hasChild: true,
-    //                   isFirstChild: true,
-    //                   child: [
-    //                     {
-    //                       node: [
-    //                         {
-    //                           url: "child4",
-    //                           title: "childtitle4",
-    //                           hasPrevious: false,
-    //                           hasChild: false,
-    //                           isFirstChild: true,
-    //                         },
-    //                       ]
-    // }
-    //                   ],
-    //                 },
-    //                 {
-    //                   url: "child3",
-    //                   title: "childtitle3",
-    //                   hasPrevious: true,
-    //                   hasChild: false,
-    //                 },
-    //    ]
-    //  }
-    //           ],
-    //         },
-    //         {
-    //           url: "url4",
-    //           title: "title4",
-    //           hasPrevious: true,
-    //           hasChild: false,
-    //         },
-    //       ],
-    //     },
-    //   ];
+    let mykey = 0;
     function generateNestedList(nodes) {
-        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul", key: `ul-${Math.floor((Math.random() * 100) + 1)}` }, nodes.map((node, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
-            node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li", key: `node-${node.globalIndex}` },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: `node-div-${node.globalIndex}` },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector", key: `node-div-div-${node.globalIndex}` })))),
-            node.hasPrevious && !node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: `sibling-${index}`, className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: `sibling-div-${index}` },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator", key: `sibling-div-div${index}` })))),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: `li-${index}`, className: "li" },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: `li-div-${index}` },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { key: `li-div-p${index}` }, node.url)),
+        function switchToTabOrOpenNew(url) {
+            chrome.tabs.query({}, function (tabs) {
+                // Check if any tab has the given URL
+                let tabExists = tabs.some(function (tab) {
+                    return tab.url === url;
+                });
+                if (tabExists) {
+                    // Switch to the existing tab with the given URL
+                    let existingTab = tabs.find(function (tab) {
+                        return tab.url === url;
+                    });
+                    chrome.tabs.update(existingTab.id, { active: true });
+                }
+                else {
+                    // Open a new tab with the given URL
+                    chrome.tabs.create({ url: url });
+                }
+            });
+        }
+        const linkClickHandler = (event) => {
+            event.preventDefault();
+            // console.log(event.currentTarget)
+            if (event.currentTarget instanceof HTMLAnchorElement) {
+                const linkEl = event.currentTarget;
+                const url = linkEl.href;
+                console.log(url);
+                if (url) {
+                    switchToTabOrOpenNew(url);
+                }
+            }
+        };
+        console.log(mykey);
+        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", { className: "ul", key: ++mykey }, nodes.map((node, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, { key: ++mykey },
+            node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { className: "li", key: ++mykey },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: ++mykey },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "childConnector", key: ++mykey })))),
+            node.hasPrevious && !node.isFirstChild && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: ++mykey, className: "li" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: ++mykey },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "seperator", key: ++mykey })))),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", { key: ++mykey, className: "li" },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: ++mykey },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", { href: node.url, onClick: linkClickHandler, className: "anchor" },
+                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", { key: node.globalIndex, className: node.type === "removed" ? "paragraph removed" : "paragraph" }, node.url.split("://")[1]))),
                 node.hasChild && node.child && node.child.map(cnode => generateNestedList(cnode.node))))))));
     }
     function generateHTML(tree) {
-        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, tree === null || tree === void 0 ? void 0 : tree.map((treeNode, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: `div-${index}` }, generateNestedList(treeNode === null || treeNode === void 0 ? void 0 : treeNode.node))))));
+        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, tree === null || tree === void 0 ? void 0 : tree.map((treeNode, index) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { key: `div-${++mykey}` }, generateNestedList(treeNode === null || treeNode === void 0 ? void 0 : treeNode.node))))));
     }
     // Call the generateHTML function with your data
     const jsxOutput = generateHTML(data);
@@ -941,30 +962,38 @@ __webpack_require__.r(__webpack_exports__);
 
 const App = () => {
     const [state, setState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-    // const [statusChanges,setStatusChanges] = useState<number>(0)
+    const [globalState, setGlobalState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{ date: new Date().toDateString(), tabStates: [] }]);
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         (0,_utils_storage__WEBPACK_IMPORTED_MODULE_3__.getTabStates)().then((tabs) => setState(tabs));
+        (0,_utils_storage__WEBPACK_IMPORTED_MODULE_3__.getGlobalTabStates)().then(allTabStates => setGlobalState(allTabStates));
+        //   const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+        //     // console.log({changes})
+        //     if (changes.tabStates) {
+        //       const newState = changes.tabStates.newValue;
+        //       setState(newState || []);
+        //     }
+        //   };
+        // chrome.storage.onChanged.addListener(handleStorageChange);
+        // return () => {
+        //   // Clean up the listener when component unmounts
+        //   chrome.storage.onChanged.removeListener(handleStorageChange);
+        // };
     }, []);
+    const reversedGlobalState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+        const globalStateCopy = globalState.slice();
+        return globalStateCopy.reverse();
+    }, [globalState]);
     const updateHandler = () => {
         (0,_utils_storage__WEBPACK_IMPORTED_MODULE_3__.getTabStates)().then((tabs) => setState(tabs));
+        (0,_utils_storage__WEBPACK_IMPORTED_MODULE_3__.getGlobalTabStates)().then(allTabStates => setGlobalState(allTabStates));
     };
-    console.log(state);
-    // const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }) => {
-    //   // console.log({changes})
-    //   if (changes.tabStates) {
-    //     console.log("updating")
-    //     // setStatusChanges(prev => prev+1)
-    //     const newState = changes.tabStates.newValue;
-    //     // console.log(newState)
-    //     setState(newState || []);
-    //     console.log({state})
-    //     // console.log({statusChanges})
-    //   }
-    // };
-    // chrome.storage.onChanged.addListener(handleStorageChange);
+    console.log({ state });
+    console.log({ globalState });
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: updateHandler }, "Update"),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabs__WEBPACK_IMPORTED_MODULE_2__["default"], { data: state })));
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: updateHandler, className: "update-button" }, "Update"),
+        reversedGlobalState.map((stateData, index) => {
+            return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabs__WEBPACK_IMPORTED_MODULE_2__["default"], { data: stateData === null || stateData === void 0 ? void 0 : stateData.tabStates, date: stateData === null || stateData === void 0 ? void 0 : stateData.date, key: `tabs-${index}` }));
+        })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
@@ -1014,8 +1043,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const UpdatedTabs = ({ data }) => {
+const UpdatedTabs = ({ data, date }) => {
+    // const date = new Date().toDateString()
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { className: "tabList" },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null,
+            "Date: ",
+            date),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_text__WEBPACK_IMPORTED_MODULE_2__["default"], { data: data })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UpdatedTabs);
@@ -1031,33 +1064,12 @@ const UpdatedTabs = ({ data }) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getGlobalTabStates: () => (/* binding */ getGlobalTabStates),
 /* harmony export */   getTabStates: () => (/* binding */ getTabStates),
+/* harmony export */   setGlobalTabStates: () => (/* binding */ setGlobalTabStates),
 /* harmony export */   setTabStates: () => (/* binding */ setTabStates)
 /* harmony export */ });
-// export const setTabStates = (tabsInfoData: TabInfo[]): Promise<void> => {
-//   // let existingState: TabInfo[][] = [];
-//   // getTabStates().then((tabsArray) => {
-//   //   existingState = tabsArray;
-//   // });
-//   // if (existingState.length !== 0) {
-//   //   existingState.push(tabsInfoData);
-//   // }
-//   const vals: LocalTabState = {
-//     tabStates: tabsInfoData,
-//   };
-//   return new Promise((resolve) => {
-//     chrome.storage.local.set(vals, () => resolve());
-//     // chrome.runtime.sendMessage({ action: "update" });
-//   });
-// };
 const setTabStates = (tabsInfoData) => {
-    // let existingState: TabInfo[][] = [];
-    // getTabStates().then((tabsArray) => {
-    //   existingState = tabsArray;
-    // });
-    // if (existingState.length !== 0) {
-    //   existingState.push(tabsInfoData);
-    // }
     const vals = {
         tabStates: tabsInfoData,
     };
@@ -1066,20 +1078,39 @@ const setTabStates = (tabsInfoData) => {
         // chrome.runtime.sendMessage({ action: "update" });
     });
 };
-// export const getTabStates = (): Promise<TabInfo[]> => {
-//   const keys: LocalTabSatteKeys[] = ["tabStates"];
-//   return new Promise((resolve) => {
-//     chrome.storage.local.get(keys, (res: LocalTabState) => {
-//       resolve(res.tabStates ?? []);
-//     });
-//   });
-// };
 const getTabStates = () => {
     const keys = ["tabStates"];
     return new Promise((resolve) => {
         chrome.storage.local.get(keys, (res) => {
             var _a;
             resolve((_a = res.tabStates) !== null && _a !== void 0 ? _a : []);
+        });
+    });
+};
+const setGlobalTabStates = (tabsInfoDataArray) => {
+    const vals = {
+        allStates: tabsInfoDataArray
+    };
+    return new Promise((resolve) => {
+        chrome.storage.local.set(vals, () => resolve());
+        // chrome.runtime.sendMessage({ action: "update" });
+    });
+};
+const dateOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+};
+const getGlobalTabStates = () => {
+    const keys = ["allStates"];
+    return new Promise((resolve) => {
+        chrome.storage.local.get(keys, (res) => {
+            var _a;
+            resolve((_a = res.allStates) !== null && _a !== void 0 ? _a : [{
+                    date: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+                    tabStates: []
+                }]);
         });
     });
 };
